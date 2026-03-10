@@ -237,6 +237,13 @@
                             <h2>智能体管理</h2>
                             <p>管理和拓展智能体能力，智能体调用底层IPDRR能力</p>
                         </div>
+                        <button class="btn btn-primary" onclick="showCreateAgentModal()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            新增智能体
+                        </button>
                     </div>
                     <div class="agents-grid" id="agentsGrid">
                     </div>
@@ -393,6 +400,81 @@
             <div class="modal-body" id="taskDetailContent">
             </div>
             <div class="modal-footer" id="taskDetailActions">
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增/编辑智能体模态框 -->
+    <div class="modal" id="agentFormModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3 id="agentFormTitle">新增智能体</h3>
+                <button class="modal-close" onclick="closeAgentFormModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editAgentId">
+                <div class="form-group">
+                    <label>智能体名称 *</label>
+                    <input type="text" id="agentName" placeholder="请输入智能体名称">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>类型 *</label>
+                        <select id="agentType">
+                            <option value="security">安全测试</option>
+                            <option value="compliance">合规审计</option>
+                            <option value="testing">功能测试</option>
+                            <option value="ops">运维自动化</option>
+                            <option value="analysis">数据分析</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>图标</label>
+                        <select id="agentIcon">
+                            <option value="shield-alert">🛡️ 盾牌</option>
+                            <option value="code">📝 代码</option>
+                            <option value="test-tube">🧪 测试</option>
+                            <option value="clipboard-check">📋 合规</option>
+                            <option value="target">🎯 目标</option>
+                            <option value="check-square">✅ 核查</option>
+                            <option value="settings">⚙️ 设置</option>
+                            <option value="bar-chart">📊 图表</option>
+                            <option value="robot">🤖 机器人</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>描述</label>
+                    <textarea id="agentDesc" rows="3" placeholder="请输入智能体描述"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>能力 (多个用逗号分隔) *</label>
+                    <input type="text" id="agentCapabilities" placeholder="如: 漏洞扫描, 风险评估, 修复建议">
+                </div>
+                <div class="form-group">
+                    <label>版本</label>
+                    <input type="text" id="agentVersion" placeholder="如: 1.0.0" value="1.0.0">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeAgentFormModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveAgent()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 智能体详情模态框 -->
+    <div class="modal" id="agentDetailModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3>智能体详情</h3>
+                <button class="modal-close" onclick="closeAgentDetailModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="agentDetailContent">
+            </div>
+            <div class="modal-footer" id="agentDetailActions">
             </div>
         </div>
     </div>

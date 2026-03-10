@@ -263,6 +263,96 @@ def get_agent(agent_id: str):
             return agent
     raise HTTPException(status_code=404, detail="智能体不存在")
 
+@app.post("/api/agents")
+def create_agent(agent_data: dict):
+    new_agent = {
+        "id": f"agent-{str(uuid.uuid4())[:8]}",
+        "name": agent_data["name"],
+        "type": agent_data.get("type", "security"),
+        "description": agent_data.get("description", ""),
+        "status": "active",
+        "icon": agent_data.get("icon", "robot"),
+        "capabilities": agent_data.get("capabilities", []),
+        "version": agent_data.get("version", "1.0.0"),
+        "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+    agents_db.append(new_agent)
+    return new_agent
+
+@app.put("/api/agents/{agent_id}")
+def update_agent(agent_id: str, agent_data: dict):
+    for i, agent in enumerate(agents_db):
+        if agent.id == agent_id:
+            agents_db[i] = {
+                "id": agent_id,
+                "name": agent_data.get("name", agent.name),
+                "type": agent_data.get("type", agent.type),
+                "description": agent_data.get("description", agent.description),
+                "status": agent_data.get("status", agent.status),
+                "icon": agent_data.get("icon", agent.icon),
+                "capabilities": agent_data.get("capabilities", agent.capabilities),
+                "version": agent_data.get("version", agent.version),
+                "created_at": agent.created_at
+            }
+            return agents_db[i]
+    raise HTTPException(status_code=404, detail="智能体不存在")
+
+@app.delete("/api/agents/{agent_id}")
+def delete_agent(agent_id: str):
+    for i, agent in enumerate(agents_db):
+        if agent.id == agent_id:
+            agents_db.pop(i)
+            return {"message": "删除成功"}
+    raise HTTPException(status_code=404, detail="智能体不存在")
+
+@app.post("/api/agents/{agent_id}/toggle")
+def toggle_agent_status(agent_id: str):
+    for agent in agents_db:
+        if agent.id == agent_id:
+            agent.status = "inactive" if agent.status == "active" else "active"
+            return {"id": agent_id, "status": agent.status}
+    raise HTTPException(status_code=404, detail="智能体不存在")
+
+@app.post("/api/agents/{agent_id}/execute")
+def execute_agent(agent_id: str, params: dict = {}):
+    for agent in agents_db:
+        if agent.id == agent_id:
+            task = {
+                "id": str(uuid.uuid4()),
+                "name": f"{agent.name} - 执行任务",
+                "agent_id": agent_id,
+                "agent_name": agent.name,
+                "workflow_id": None,
+                "step_name": "直接执行",
+                "status": "completed",
+                "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "started_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "completed_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "result": f"{agent.name}执行完成",
+                "logs": [
+                    {"time": datetime.now().strftime("%H:%M:%S"), "message": "任务开始"},
+                    {"time": datetime.now().strftime("%H:%M:%S"), "message": "调用基础安全能力"},
+                    {"time": datetime.now().strftime("%H:%M:%S"), "message": "任务完成"}
+                ],
+                "output": {
+                    "status": "success",
+                    "message": "智能体执行成功"
+                }
+            }
+            tasks_db.append(task)
+            return {"message": "执行成功", "task": task}
+    raise HTTPException(status_code=404, detail="智能体不存在")
+
+@app.get("/api/agent-types")
+def get_agent_types():
+    return [
+        {"value": "security", "label": "安全测试", "icon": "shield-alert", "color": "linear-gradient(135deg, #ef4444 0%, #f97316 100%)"},
+        {"value": "compliance", "label": "合规审计", "icon": "clipboard-check", "color": "linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%)"},
+        {"value": "testing", "label": "功能测试", "icon": "test-tube", "color": "linear-gradient(135deg, #10b981 0%, #14b8a6 100%)"},
+        {"value": "ops", "label": "运维自动化", "icon": "settings", "color": "linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%)"},
+        {"value": "analysis", "label": "数据分析", "icon": "bar-chart", "color": "linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)"},
+    ]
+
 # ==================== 工作流模板 API ====================
 
 @app.get("/api/workflow-templates")

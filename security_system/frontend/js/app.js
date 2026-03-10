@@ -20,7 +20,8 @@ const typeColors = {
     'security': 'linear-gradient(135deg, #ef4444 0%, #f97316 100%)',
     'compliance': 'linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%)',
     'testing': 'linear-gradient(135deg, #10b981 0%, #14b8a6 100%)',
-    'ops': 'linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%)'
+    'ops': 'linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%)',
+    'analysis': 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)'
 };
 
 const categoryNames = {
@@ -236,8 +237,11 @@ function renderAgentGrid() {
             <div class="agent-capabilities">
                 ${agent.capabilities.map(cap => `<span class="capability-tag">${cap}</span>`).join('')}
             </div>
-            <div class="agent-meta">
-                <span class="agent-version">v${agent.version}</span>
+            <div class="agent-card-actions">
+                <button class="btn btn-sm" onclick="event.stopPropagation(); showAgentDetail('${agent.id}')">详情</button>
+                <button class="btn btn-sm" onclick="event.stopPropagation(); showEditAgentModal('${agent.id}')">编辑</button>
+                <button class="btn btn-sm ${agent.status === 'active' ? '' : 'btn-primary'}" onclick="event.stopPropagation(); toggleAgent('${agent.id}')">${agent.status === 'active' ? '禁用' : '启用'}</button>
+                <button class="btn btn-sm" onclick="event.stopPropagation(); deleteAgent('${agent.id}')">删除</button>
             </div>
         </div>
     `).join('');
@@ -644,3 +648,222 @@ document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
         document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
     });
 });
+
+// ==================== 智能体管理函数 ====================
+
+function showCreateAgentModal() {
+    document.getElementById('agentFormTitle').textContent = '新增智能体';
+    document.getElementById('editAgentId').value = '';
+    document.getElementById('agentName').value = '';
+    document.getElementById('agentType').value = 'security';
+    document.getElementById('agentIcon').value = 'robot';
+    document.getElementById('agentDesc').value = '';
+    document.getElementById('agentCapabilities').value = '';
+    document.getElementById('agentVersion').value = '1.0.0';
+    document.getElementById('agentFormModal').classList.add('active');
+}
+
+function showEditAgentModal(agentId) {
+    const agent = agents.find(a => a.id === agentId);
+    if (!agent) return;
+
+    document.getElementById('agentFormTitle').textContent = '编辑智能体';
+    document.getElementById('editAgentId').value = agent.id;
+    document.getElementById('agentName').value = agent.name;
+    document.getElementById('agentType').value = agent.type;
+    document.getElementById('agentIcon').value = agent.icon || 'robot';
+    document.getElementById('agentDesc').value = agent.description;
+    document.getElementById('agentCapabilities').value = agent.capabilities.join(', ');
+    document.getElementById('agentVersion').value = agent.version;
+    document.getElementById('agentFormModal').classList.add('active');
+}
+
+function closeAgentFormModal() {
+    document.getElementById('agentFormModal').classList.remove('active');
+}
+
+async function saveAgent() {
+    const agentId = document.getElementById('editAgentId').value;
+    const name = document.getElementById('agentName').value.trim();
+    const type = document.getElementById('agentType').value;
+    const icon = document.getElementById('agentIcon').value;
+    const description = document.getElementById('agentDesc').value.trim();
+    const capabilitiesStr = document.getElementById('agentCapabilities').value;
+    const version = document.getElementById('agentVersion').value.trim() || '1.0.0';
+
+    if (!name) {
+        alert('请输入智能体名称');
+        return;
+    }
+
+    if (!capabilitiesStr) {
+        alert('请输入智能体能力');
+        return;
+    }
+
+    const capabilities = capabilitiesStr.split(',').map(c => c.trim()).filter(c => c);
+
+    const agentData = {
+        name,
+        type,
+        icon,
+        description,
+        capabilities,
+        version
+    };
+
+    try {
+        if (agentId) {
+            // 编辑
+            await fetch(`${API_BASE}/agents/${agentId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(agentData)
+            });
+            alert('智能体更新成功');
+        } else {
+            // 新增
+            await fetch(`${API_BASE}/agents`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(agentData)
+            });
+            alert('智能体创建成功');
+        }
+        closeAgentFormModal();
+        loadData();
+    } catch (error) {
+        alert('操作失败: ' + error.message);
+    }
+}
+
+function showAgentDetail(agentId) {
+    const agent = agents.find(a => a.id === agentId);
+    if (!agent) return;
+
+    const modal = document.getElementById('agentDetailModal');
+    const content = document.getElementById('agentDetailContent');
+    const actions = document.getElementById('agentDetailActions');
+
+    const typeNames = {
+        'security': '安全测试',
+        'compliance': '合规审计',
+        'testing': '功能测试',
+        'ops': '运维自动化',
+        'analysis': '数据分析'
+    };
+
+    // 统计使用该智能体的工作流和任务
+    const relatedWorkflows = workflowTemplates.filter(t => 
+        t.steps.some(s => s.agent_id === agentId)
+    ).length;
+    
+    const relatedTasks = tasks.filter(t => t.agent_id === agentId).length;
+
+    content.innerHTML = `
+        <div class="agent-detail-header">
+            <div class="agent-detail-icon" style="background: ${typeColors[agent.type] || typeColors.security}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    ${iconMap[agent.icon] || iconMap['robot']}
+                </svg>
+            </div>
+            <div class="agent-detail-info">
+                <h2>${agent.name}</h2>
+                <p>${agent.description}</p>
+                <span class="badge ${agent.status === 'active' ? 'success' : ''}">${agent.status === 'active' ? '在线' : '离线'}</span>
+            </div>
+        </div>
+        
+        <div class="agent-detail-stats">
+            <div class="agent-detail-stat">
+                <div class="value">${typeNames[agent.type] || agent.type}</div>
+                <div class="label">类型</div>
+            </div>
+            <div class="agent-detail-stat">
+                <div class="value">v${agent.version}</div>
+                <div class="label">版本</div>
+            </div>
+            <div class="agent-detail-stat">
+                <div class="value">${agent.created_at.split(' ')[0]}</div>
+                <div class="label">创建时间</div>
+            </div>
+        </div>
+
+        <div class="agent-detail-section">
+            <h4>关联工作流模板</h4>
+            <p style="color: var(--text-secondary);">${relatedWorkflows} 个工作流模板使用此智能体</p>
+        </div>
+
+        <div class="agent-detail-section">
+            <h4>执行统计</h4>
+            <p style="color: var(--text-secondary);">累计执行 ${relatedTasks} 次</p>
+        </div>
+
+        <div class="agent-detail-section">
+            <h4>能力列表</h4>
+            <div class="capability-tags">
+                ${agent.capabilities.map(cap => `<span class="capability-tag">${cap}</span>`).join('')}
+            </div>
+        </div>
+
+        <div class="agent-detail-section">
+            <h4>底层能力调用</h4>
+            <p style="color: var(--text-secondary); font-size: 13px;">该智能体调用基础安全IPDRR能力完成安全运营任务</p>
+        </div>
+    `;
+
+    actions.innerHTML = `
+        <button class="btn" onclick="closeAgentDetailModal()">关闭</button>
+        <button class="btn btn-primary" onclick="executeAgent('${agent.id}'); closeAgentDetailModal();">执行智能体</button>
+    `;
+
+    modal.classList.add('active');
+}
+
+function closeAgentDetailModal() {
+    document.getElementById('agentDetailModal').classList.remove('active');
+}
+
+async function toggleAgent(agentId) {
+    try {
+        const response = await fetch(`${API_BASE}/agents/${agentId}/toggle`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const result = await response.json();
+        alert(`智能体已${result.status === 'active' ? '启用' : '禁用'}`);
+        loadData();
+    } catch (error) {
+        alert('操作失败: ' + error.message);
+    }
+}
+
+async function deleteAgent(agentId) {
+    const agent = agents.find(a => a.id === agentId);
+    if (!confirm(`确定要删除智能体"${agent.name}"吗？`)) return;
+
+    try {
+        await fetch(`${API_BASE}/agents/${agentId}`, {
+            method: 'DELETE'
+        });
+        alert('智能体已删除');
+        loadData();
+    } catch (error) {
+        alert('删除失败: ' + error.message);
+    }
+}
+
+async function executeAgent(agentId) {
+    try {
+        const response = await fetch(`${API_BASE}/agents/${agentId}/execute`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+        });
+        const result = await response.json();
+        alert(`智能体执行完成\n任务: ${result.task.name}\n结果: ${result.task.result}`);
+        loadData();
+    } catch (error) {
+        alert('执行失败: ' + error.message);
+    }
+}
