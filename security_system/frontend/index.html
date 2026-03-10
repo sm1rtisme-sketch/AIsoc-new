@@ -11,7 +11,6 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- 侧边栏 -->
         <aside class="sidebar">
             <div class="logo">
                 <div class="logo-icon">
@@ -26,8 +25,10 @@
                     <div class="nav-section-title">运营平台</div>
                     <a href="#" class="nav-item active" data-page="dashboard">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                            <path d="M22 4L12 14.01l-3-3"/>
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="14" y="3" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/>
+                            <rect x="3" y="14" width="7" height="7"/>
                         </svg>
                         <span>工作台</span>
                     </a>
@@ -39,6 +40,13 @@
                             <path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/>
                         </svg>
                         <span>运营场景</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="workflow-templates">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                            <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                        </svg>
+                        <span>工作流模板</span>
                     </a>
                 </div>
                 <div class="nav-section">
@@ -60,11 +68,14 @@
                         </svg>
                         <span>任务中心</span>
                     </a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">能力拓展</div>
                     <a href="#" class="nav-item" data-page="skills">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                         </svg>
-                        <span>能力拓展</span>
+                        <span>IPDRR能力</span>
                     </a>
                 </div>
             </nav>
@@ -79,7 +90,6 @@
             </div>
         </aside>
 
-        <!-- 主内容区 -->
         <main class="main-content">
             <header class="topbar">
                 <div class="page-title">
@@ -93,12 +103,12 @@
                             <path d="M13.73 21a2 2 0 01-3.46 0"/>
                         </svg>
                     </button>
-                    <button class="btn btn-primary" id="newTaskBtn">
+                    <button class="btn btn-primary" id="newWorkflowBtn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="12" y1="5" x2="12" y2="19"/>
                             <line x1="5" y1="12" x2="19" y2="12"/>
                         </svg>
-                        新建任务
+                        新建工作流
                     </button>
                 </div>
             </header>
@@ -110,30 +120,6 @@
                         <div class="stat-card">
                             <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <rect x="3" y="11" width="18" height="10" rx="2"/>
-                                    <circle cx="12" cy="5" r="2"/>
-                                </svg>
-                            </div>
-                            <div class="stat-info">
-                                <span class="stat-value" id="agentCount">0</span>
-                                <span class="stat-label">智能体</span>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                                    <path d="M22 4L12 14.01l-3-3"/>
-                                </svg>
-                            </div>
-                            <div class="stat-info">
-                                <span class="stat-value" id="taskCount">0</span>
-                                <span class="stat-label">任务</span>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <circle cx="18" cy="5" r="3"/>
                                     <circle cx="6" cy="12" r="3"/>
                                     <circle cx="18" cy="19" r="3"/>
@@ -142,7 +128,31 @@
                             </div>
                             <div class="stat-info">
                                 <span class="stat-value" id="workflowCount">0</span>
-                                <span class="stat-label">工作流</span>
+                                <span class="stat-label">运行中工作流</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 11l3 3L22 4"/>
+                                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="taskCount">0</span>
+                                <span class="stat-label">待审批任务</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="10" rx="2"/>
+                                    <circle cx="12" cy="5" r="2"/>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="agentCount">0</span>
+                                <span class="stat-label">智能体</span>
                             </div>
                         </div>
                         <div class="stat-card">
@@ -161,31 +171,29 @@
                     <div class="dashboard-grid">
                         <div class="card workflow-card full-width">
                             <div class="card-header">
-                                <h3>系统上线工作流</h3>
-                                <span class="badge success">进行中</span>
+                                <h3>进行中的工作流</h3>
+                                <a href="#" onclick="navigateTo('workflows'); return false;" class="view-all">查看全部</a>
                             </div>
                             <div class="card-content">
-                                <div class="workflow-steps" id="workflowSteps">
-                                    <!-- 工作流步骤将通过JS加载 -->
+                                <div class="workflow-list" id="runningWorkflows">
                                 </div>
                             </div>
                         </div>
 
                         <div class="card">
                             <div class="card-header">
-                                <h3>智能体概览</h3>
-                                <a href="#" onclick="navigateTo('agents'); return false;" class="view-all">查看全部</a>
+                                <h3>待审批任务</h3>
+                                <a href="#" onclick="navigateTo('tasks'); return false;" class="view-all">查看全部</a>
                             </div>
-                            <div class="card-content" id="agentList">
+                            <div class="card-content" id="pendingTasks">
                             </div>
                         </div>
 
                         <div class="card">
                             <div class="card-header">
-                                <h3>最近任务</h3>
-                                <a href="#" onclick="navigateTo('tasks'); return false;" class="view-all">查看全部</a>
+                                <h3>工作流模板</h3>
                             </div>
-                            <div class="card-content" id="recentTasks">
+                            <div class="card-content" id="templateList">
                             </div>
                         </div>
                     </div>
@@ -194,10 +202,31 @@
                 <!-- 运营场景 -->
                 <div id="page-workflows" class="page">
                     <div class="page-header">
-                        <h2>运营场景</h2>
-                        <p>管理智能体工作流，实现场景闭环</p>
+                        <div>
+                            <h2>运营场景</h2>
+                            <p>管理工作流实例，启动和监控工作流执行</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="showCreateWorkflowModal()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            新建工作流
+                        </button>
                     </div>
                     <div class="workflows-grid" id="workflowsGrid">
+                    </div>
+                </div>
+
+                <!-- 工作流模板 -->
+                <div id="page-workflow-templates" class="page">
+                    <div class="page-header">
+                        <div>
+                            <h2>工作流模板</h2>
+                            <p>管理运营场景的工作流模板，定义智能体编排</p>
+                        </div>
+                    </div>
+                    <div class="templates-grid" id="templatesGrid">
                     </div>
                 </div>
 
@@ -208,13 +237,6 @@
                             <h2>智能体管理</h2>
                             <p>管理和拓展智能体能力，智能体调用底层IPDRR能力</p>
                         </div>
-                        <button class="btn btn-primary" onclick="showCreateAgentModal()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="12" y1="5" x2="12" y2="19"/>
-                                <line x1="5" y1="12" x2="19" y2="12"/>
-                            </svg>
-                            新增智能体
-                        </button>
                     </div>
                     <div class="agents-grid" id="agentsGrid">
                     </div>
@@ -224,13 +246,14 @@
                 <div id="page-tasks" class="page">
                     <div class="page-header">
                         <h2>任务中心</h2>
-                        <p>查看和管理所有任务</p>
+                        <p>查看和管理所有任务，包含工作流任务和审批任务</p>
                     </div>
                     <div class="tasks-table-container">
                         <table class="data-table">
                             <thead>
                                 <tr>
                                     <th>任务名称</th>
+                                    <th>关联工作流</th>
                                     <th>执行智能体</th>
                                     <th>状态</th>
                                     <th>创建时间</th>
@@ -246,8 +269,8 @@
                 <!-- 能力拓展 -->
                 <div id="page-skills" class="page">
                     <div class="page-header">
-                        <h2>能力拓展</h2>
-                        <p>智能体调用的底层安全能力 (IPDRR)</p>
+                        <h2>IPDRR能力</h2>
+                        <p>智能体调用的底层安全能力</p>
                     </div>
                     <div class="capability-grid">
                         <div class="capability-card">
@@ -258,7 +281,7 @@
                             </div>
                             <h3>识别 (Identify)</h3>
                             <p>资产发现、漏洞扫描、代码审计、安全评估</p>
-                            <span class="capability-tag">被动能力</span>
+                            <span class="capability-tag passive">被动能力</span>
                         </div>
                         <div class="capability-card">
                             <div class="capability-icon">
@@ -269,7 +292,7 @@
                             </div>
                             <h3>保护 (Protect)</h3>
                             <p>访问控制、数据加密、身份认证、安全策略</p>
-                            <span class="capability-tag">被动能力</span>
+                            <span class="capability-tag passive">被动能力</span>
                         </div>
                         <div class="capability-card">
                             <div class="capability-icon">
@@ -280,7 +303,7 @@
                             </div>
                             <h3>检测 (Detect)</h3>
                             <p>入侵检测、异常行为分析、日志审计、威胁监测</p>
-                            <span class="capability-tag">被动能力</span>
+                            <span class="capability-tag passive">被动能力</span>
                         </div>
                         <div class="capability-card">
                             <div class="capability-icon">
@@ -291,7 +314,7 @@
                             </div>
                             <h3>响应 (Respond)</h3>
                             <p>事件响应、应急处置、威胁阻断、恢复还原</p>
-                            <span class="capability-tag">主动能力</span>
+                            <span class="capability-tag active">主动能力</span>
                         </div>
                         <div class="capability-card">
                             <div class="capability-icon">
@@ -302,7 +325,7 @@
                             </div>
                             <h3>恢复 (Recover)</h3>
                             <p>业务恢复、数据修复、容灾备份、持续运营</p>
-                            <span class="capability-tag">主动能力</span>
+                            <span class="capability-tag active">主动能力</span>
                         </div>
                     </div>
                 </div>
@@ -310,66 +333,51 @@
         </main>
     </div>
 
-    <!-- 新建任务模态框 -->
-    <div class="modal" id="newTaskModal">
+    <!-- 新建工作流模态框 -->
+    <div class="modal" id="createWorkflowModal">
         <div class="modal-backdrop"></div>
-        <div class="modal-content">
+        <div class="modal-content modal-lg">
             <div class="modal-header">
-                <h3>新建任务</h3>
+                <h3>新建工作流</h3>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>任务名称</label>
-                    <input type="text" id="taskName" placeholder="请输入任务名称">
+                    <label>工作流名称</label>
+                    <input type="text" id="workflowName" placeholder="请输入工作流名称">
                 </div>
                 <div class="form-group">
-                    <label>选择智能体</label>
-                    <select id="taskAgent">
+                    <label>工作流描述</label>
+                    <input type="text" id="workflowDesc" placeholder="请输入工作流描述">
+                </div>
+                <div class="form-group">
+                    <label>选择模板</label>
+                    <select id="workflowTemplate" onchange="loadTemplateSteps()">
                     </select>
+                </div>
+                <div class="form-group" id="templateStepsPreview">
+                    <label>模板步骤预览</label>
+                    <div id="stepsPreview"></div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn" onclick="closeModal()">取消</button>
-                <button class="btn btn-primary" onclick="createTask()">创建</button>
+                <button class="btn btn-primary" onclick="createWorkflow()">创建</button>
             </div>
         </div>
     </div>
 
-    <!-- 新增智能体模态框 -->
-    <div class="modal" id="createAgentModal">
+    <!-- 工作流详情模态框 -->
+    <div class="modal" id="workflowDetailModal">
         <div class="modal-backdrop"></div>
-        <div class="modal-content modal-lg">
+        <div class="modal-content modal-xl">
             <div class="modal-header">
-                <h3>新增智能体</h3>
-                <button class="modal-close" onclick="closeAgentModal()">&times;</button>
+                <h3>工作流详情</h3>
+                <button class="modal-close" onclick="closeWorkflowModal()">&times;</button>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>智能体名称</label>
-                    <input type="text" id="agentName" placeholder="请输入智能体名称">
-                </div>
-                <div class="form-group">
-                    <label>类型</label>
-                    <select id="agentType">
-                        <option value="security">安全测试</option>
-                        <option value="compliance">合规审计</option>
-                        <option value="testing">功能测试</option>
-                        <option value="ops">运维自动化</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>描述</label>
-                    <input type="text" id="agentDesc" placeholder="请输入智能体描述">
-                </div>
-                <div class="form-group">
-                    <label>能力 (逗号分隔)</label>
-                    <input type="text" id="agentCaps" placeholder="如: 漏洞扫描, 风险评估">
-                </div>
+            <div class="modal-body" id="workflowDetailContent">
             </div>
-            <div class="modal-footer">
-                <button class="btn" onclick="closeAgentModal()">取消</button>
-                <button class="btn btn-primary" onclick="createAgent()">创建</button>
+            <div class="modal-footer" id="workflowDetailActions">
             </div>
         </div>
     </div>
@@ -385,21 +393,6 @@
             <div class="modal-body" id="taskDetailContent">
             </div>
             <div class="modal-footer" id="taskDetailActions">
-            </div>
-        </div>
-    </div>
-
-    <!-- 智能体详情模态框 -->
-    <div class="modal" id="agentDetailModal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-content modal-lg">
-            <div class="modal-header">
-                <h3>智能体详情</h3>
-                <button class="modal-close" onclick="closeAgentDetailModal()">&times;</button>
-            </div>
-            <div class="modal-body" id="agentDetailContent">
-            </div>
-            <div class="modal-footer" id="agentDetailActions">
             </div>
         </div>
     </div>

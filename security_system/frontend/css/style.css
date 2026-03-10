@@ -1080,3 +1080,436 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* 工作流相关样式 */
+.workflow-mini-card {
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.workflow-mini-card:hover {
+    background: var(--bg-secondary);
+    transform: translateX(4px);
+}
+
+.workflow-mini-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.workflow-mini-header h4 {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.workflow-mini-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.workflow-mini-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--bg-secondary);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.workflow-mini-progress span {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.workflow-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.workflow-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.workflow-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.workflow-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.workflow-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.workflow-progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+.workflow-steps-preview {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.step-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--border-color);
+}
+
+.step-dot.completed {
+    background: var(--accent-success);
+    box-shadow: 0 0 8px var(--accent-success);
+}
+
+.step-dot.running {
+    background: var(--accent-primary);
+    box-shadow: 0 0 8px var(--accent-primary);
+    animation: pulse 2s infinite;
+}
+
+.step-dot.waiting_approval {
+    background: var(--accent-warning);
+    box-shadow: 0 0 8px var(--accent-warning);
+}
+
+.step-dot.pending {
+    background: var(--border-color);
+}
+
+.step-dot.failed, .step-dot.rejected {
+    background: var(--accent-danger);
+}
+
+.step-more {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.templates-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.template-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+}
+
+.template-card-header {
+    margin-bottom: 16px;
+}
+
+.template-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.template-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.template-steps {
+    margin-bottom: 16px;
+}
+
+.template-step-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.template-step-item:last-child {
+    border-bottom: none;
+}
+
+.step-num {
+    width: 24px;
+    height: 24px;
+    background: var(--bg-tertiary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-m-step-item .step-name {
+    flexuted);
+}
+
+.template: 1;
+    font-size: 14px;
+}
+
+.step-approval {
+    font-size: 11px;
+    color: var(--accent-warning);
+    background: rgba(245, 158, 11, 0.15);
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.template-actions {
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+.template-mini-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.template-mini-item:last-child {
+    border-bottom: none;
+}
+
+.template-mini-info h4 {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.template-mini-info p {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.modal-xl {
+    max-width: 800px;
+}
+
+.workflow-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.workflow-detail-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.workflow-detail-header p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.workflow-detail-info {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.info-item {
+    background: var(--bg-tertiary);
+    padding: 12px;
+    border-radius: var(--radius-sm);
+}
+
+.info-item label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+
+.info-item span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.workflow-steps-detail h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.steps-timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline-step {
+    position: relative;
+    padding-bottom: 24px;
+    padding-left: 20px;
+    border-left: 2px solid var(--border-color);
+}
+
+.timeline-step:last-child {
+    border-left: none;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -7px;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--border-color);
+}
+
+.timeline-step.completed .timeline-dot {
+    background: var(--accent-success);
+    box-shadow: 0 0 8px var(--accent-success);
+}
+
+.timeline-step.running .timeline-dot {
+    background: var(--accent-primary);
+    box-shadow: 0 0 8px var(--accent-primary);
+}
+
+.timeline-step.waiting_approval .timeline-dot {
+    background: var(--accent-warning);
+    box-shadow: 0 0 8px var(--accent-warning);
+}
+
+.timeline-step.failed .timeline-dot,
+.timeline-step.rejected .timeline-dot {
+    background: var(--accent-danger);
+}
+
+.timeline-content {
+    background: var(--bg-tertiary);
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.timeline-title {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.timeline-status {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.timeline-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.timeline-agent {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+
+.timeline-result {
+    font-size: 13px;
+    color: var(--accent-primary);
+    margin-bottom: 4px;
+}
+
+.timeline-time {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+
+.step-preview-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+}
+
+.step-preview-item .step-num {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+}
+
+.step-preview-item .step-name {
+    flex: 1;
+    font-size: 13px;
+}
+
+.step-preview-item .step-agent {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.step-approval-badge {
+    font-size: 10px;
+    color: var(--accent-warning);
+    background: rgba(245, 158, 11, 0.15);
+    padding: 2px 6px;
+    border-radius: 8px;
+}
+
+.badge.danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--accent-danger);
+}
