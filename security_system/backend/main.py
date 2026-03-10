@@ -4,7 +4,6 @@ from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
 import uuid
-import json
 
 app = FastAPI(title="安全运营平台", version="1.0.0")
 
@@ -18,29 +17,6 @@ app.add_middleware(
 
 # ==================== 数据模型 ====================
 
-class Vulnerability(BaseModel):
-    id: str
-    name: str
-    severity: str
-    status: str
-    discovered_at: str
-    description: str
-
-class SecurityEvent(BaseModel):
-    id: str
-    event_type: str
-    severity: str
-    source: str
-    timestamp: str
-    description: str
-
-class Asset(BaseModel):
-    id: str
-    name: str
-    type: str
-    ip: str
-    status: str
-
 class Agent(BaseModel):
     id: str
     name: str
@@ -48,6 +24,16 @@ class Agent(BaseModel):
     description: str
     status: str
     capabilities: List[str]
+    icon: str = "robot"
+    version: str = "1.0.0"
+    created_at: str = ""
+
+class AgentCreate(BaseModel):
+    name: str
+    type: str
+    description: str
+    capabilities: List[str]
+    icon: str = "robot"
 
 class Task(BaseModel):
     id: str
@@ -58,6 +44,7 @@ class Task(BaseModel):
     created_at: str
     result: Optional[str] = None
     logs: Optional[List[str]] = None
+    output: Optional[dict] = None
 
 class Approval(BaseModel):
     id: str
@@ -68,6 +55,22 @@ class Approval(BaseModel):
     created_at: str
     comment: Optional[str] = None
 
+class WorkflowStep(BaseModel):
+    step_id: str
+    name: str
+    agent_id: str
+    agent_name: str
+    status: str
+    order: int
+
+class Workflow(BaseModel):
+    id: str
+    name: str
+    description: str
+    steps: List[WorkflowStep]
+    status: str
+    created_at: str
+
 # ==================== 模拟数据 ====================
 
 agents_db = [
@@ -75,124 +78,78 @@ agents_db = [
         id="agent-001",
         name="漏洞扫描智能体",
         type="security",
-        description="自动化漏洞扫描与风险评估",
+        description="调用基础安全IPDRR的漏洞扫描工具，自动发现系统漏洞并生成修复建议",
         status="active",
-        capabilities=["漏洞扫描", "风险评估", "修复建议"]
+        icon="shield-alert",
+        capabilities=["漏洞扫描", "风险评估", "修复建议"],
+        version="1.2.0",
+        created_at="2026-01-15 10:00:00"
     ),
     Agent(
         id="agent-002",
         name="代码审计智能体",
         type="security",
-        description="静态代码分析与安全审计",
+        description="调用基础安全IPDRR的代码审计工具，进行静态代码分析发现安全缺陷",
         status="active",
-        capabilities=["代码审计", "安全漏洞检测", "代码质量评估"]
+        icon="code",
+        capabilities=["代码审计", "安全漏洞检测", "代码质量评估"],
+        version="1.1.5",
+        created_at="2026-01-20 14:30:00"
     ),
     Agent(
         id="agent-003",
         name="定级备案智能体",
         type="compliance",
-        description="等保定级与备案流程自动化",
+        description="自动化完成等保定级自评和备案材料生成",
         status="active",
-        capabilities=["等保自评", "备案材料生成", "合规检查"]
+        icon="file-check",
+        capabilities=["等保自评", "备案材料生成", "定级报告"],
+        version="2.0.0",
+        created_at="2026-02-01 09:00:00"
     ),
     Agent(
         id="agent-004",
         name="功能测试智能体",
         type="testing",
-        description="自动化功能测试与回归测试",
+        description="自动化功能测试、接口测试和回归测试",
         status="active",
-        capabilities=["功能测试", "接口测试", "性能测试"]
+        icon="test-tube",
+        capabilities=["功能测试", "接口测试", "性能测试", "回归测试"],
+        version="1.5.0",
+        created_at="2026-02-10 11:00:00"
     ),
     Agent(
         id="agent-005",
         name="合规检查智能体",
         type="compliance",
-        description="安全合规检查与策略审计",
+        description="安全合规检查、策略审计和合规报告生成",
         status="active",
-        capabilities=["合规检查", "策略审计", "合规报告"]
+        icon="clipboard-check",
+        capabilities=["合规检查", "策略审计", "合规报告", "差距分析"],
+        version="1.3.0",
+        created_at="2026-02-15 16:00:00"
     ),
 ]
 
 tasks_db = []
 approvals_db = []
 
-# ==================== 基础安全IPDRR API ====================
-
-@app.get("/api/security/vulnerabilities")
-def get_vulnerabilities():
-    return [
-        Vulnerability(
-            id="vuln-001",
-            name="SQL注入漏洞",
-            severity="high",
-            status="pending",
-            discovered_at="2026-03-10 10:30:00",
-            description="用户输入未经过滤直接拼接SQL语句"
-        ),
-        Vulnerability(
-            id="vuln-002",
-            name="XSS跨站脚本",
-            severity="medium",
-            status="fixed",
-            discovered_at="2026-03-09 14:20:00",
-            description="富文本编辑器未做HTML转义"
-        ),
-        Vulnerability(
-            id="vuln-003",
-            name="敏感信息泄露",
-            severity="critical",
-            status="pending",
-            discovered_at="2026-03-10 09:15:00",
-            description="配置文件包含明文数据库密码"
-        ),
-    ]
-
-@app.get("/api/security/events")
-def get_security_events():
-    return [
-        SecurityEvent(
-            id="evt-001",
-            event_type="入侵检测",
-            severity="high",
-            source="192.168.1.100",
-            timestamp="2026-03-10 11:45:00",
-            description="检测到异常登录尝试"
-        ),
-        SecurityEvent(
-            id="evt-002",
-            event_type="权限变更",
-            severity="medium",
-            source="192.168.1.50",
-            timestamp="2026-03-10 10:20:00",
-            description="管理员账户权限被修改"
-        ),
-    ]
-
-@app.get("/api/security/assets")
-def get_assets():
-    return [
-        Asset(id="asset-001", name="Web服务器", type="server", ip="192.168.1.10", status="online"),
-        Asset(id="asset-002", name="数据库服务器", type="database", ip="192.168.1.20", status="online"),
-        Asset(id="asset-003", name="API网关", type="gateway", ip="192.168.1.30", status="online"),
-    ]
-
-@app.post("/api/security/scan")
-def run_vulnerability_scan(target: str):
-    return {
-        "task_id": str(uuid.uuid4()),
-        "status": "started",
-        "message": f"漏洞扫描任务已启动，目标: {target}",
-        "progress": 0
-    }
-
-@app.post("/api/security/code-audit")
-def run_code_audit(project: str):
-    return {
-        "task_id": str(uuid.uuid4()),
-        "status": "started",
-        "message": f"代码审计任务已启动，项目: {project}",
-        "progress": 0
-    }
+workflows_db = [
+    Workflow(
+        id="wf-001",
+        name="系统上线工作流",
+        description="新系统上线所需的完整安全运营流程",
+        steps=[
+            WorkflowStep(step_id="s1", name="漏洞扫描", agent_id="agent-001", agent_name="漏洞扫描智能体", status="completed", order=1),
+            WorkflowStep(step_id="s2", name="代码审计", agent_id="agent-002", agent_name="代码审计智能体", status="completed", order=2),
+            WorkflowStep(step_id="s3", name="等保定级", agent_id="agent-003", agent_name="定级备案智能体", status="completed", order=3),
+            WorkflowStep(step_id="s4", name="功能测试", agent_id="agent-004", agent_name="功能测试智能体", status="in_progress", order=4),
+            WorkflowStep(step_id="s5", name="合规检查", agent_id="agent-005", agent_name="合规检查智能体", status="pending", order=5),
+        ],
+        status="running",
+        created_at="2026-03-01 10:00:00"
+    ),
+]
 
 # ==================== 智能体平台 API ====================
 
@@ -207,26 +164,99 @@ def get_agent(agent_id: str):
             return agent
     raise HTTPException(status_code=404, detail="智能体不存在")
 
+@app.post("/api/agents")
+def create_agent(agent_data: AgentCreate):
+    new_agent = Agent(
+        id=f"agent-{str(uuid.uuid4())[:8]}",
+        name=agent_data.name,
+        type=agent_data.type,
+        description=agent_data.description,
+        status="active",
+        icon=agent_data.icon,
+        capabilities=agent_data.capabilities,
+        version="1.0.0",
+        created_at=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    )
+    agents_db.append(new_agent)
+    return new_agent
+
+@app.put("/api/agents/{agent_id}")
+def update_agent(agent_id: str, agent_data: dict):
+    for i, agent in enumerate(agents_db):
+        if agent.id == agent_id:
+            agents_db[i] = Agent(
+                id=agent_id,
+                name=agent_data.get("name", agent.name),
+                type=agent_data.get("type", agent.type),
+                description=agent_data.get("description", agent.description),
+                status=agent_data.get("status", agent.status),
+                icon=agent_data.get("icon", agent.icon),
+                capabilities=agent_data.get("capabilities", agent.capabilities),
+                version=agent.version,
+                created_at=agent.created_at
+            )
+            return agents_db[i]
+    raise HTTPException(status_code=404, detail="智能体不存在")
+
+@app.delete("/api/agents/{agent_id}")
+def delete_agent(agent_id: str):
+    for i, agent in enumerate(agents_db):
+        if agent.id == agent_id:
+            agents_db.pop(i)
+            return {"message": "删除成功"}
+    raise HTTPException(status_code=404, detail="智能体不存在")
+
 @app.post("/api/agents/{agent_id}/execute")
 def execute_agent(agent_id: str, params: dict):
     for agent in agents_db:
         if agent.id == agent_id:
+            output = {
+                "scan_results": [
+                    {"vuln": "SQL注入", "severity": "high", "status": "found"},
+                    {"vuln": "XSS", "severity": "medium", "status": "found"}
+                ] if agent.type == "security" else None,
+                "test_results": {
+                    "passed": 45,
+                    "failed": 3,
+                    "total": 48
+                } if agent.type == "testing" else None,
+                "compliance_results": {
+                    "score": 85,
+                    "issues": 5
+                } if agent.type == "compliance" else None
+            }
+            
             task = Task(
                 id=str(uuid.uuid4()),
                 name=f"{agent.name}任务",
                 agent_id=agent_id,
                 agent_name=agent.name,
-                status="running",
+                status="completed",
                 created_at=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                result=None,
-                logs=[f"任务已启动", "正在执行中...", "任务完成"]
+                result=f"{agent.name}执行完成",
+                logs=[
+                    f"[{datetime.now().strftime('%H:%M:%S')}] 任务已启动",
+                    f"[{datetime.now().strftime('%H:%M:%S')}] 调用基础安全能力...",
+                    f"[{datetime.now().strftime('%H:%M:%S')}] 执行分析中...",
+                    f"[{datetime.now().strftime('%H:%M:%S')}] 任务完成"
+                ],
+                output=output
             )
-            tasks_db.append(task)
+            tasks_db.insert(0, task)
             return {
                 "task_id": task.id,
-                "status": "started",
-                "message": f"智能体 {agent.name} 已启动"
+                "status": "completed",
+                "message": f"智能体 {agent.name} 执行完成",
+                "output": output
             }
+    raise HTTPException(status_code=404, detail="智能体不存在")
+
+@app.post("/api/agents/{agent_id}/toggle")
+def toggle_agent(agent_id: str):
+    for agent in agents_db:
+        if agent.id == agent_id:
+            agent.status = "inactive" if agent.status == "active" else "active"
+            return {"status": agent.status}
     raise HTTPException(status_code=404, detail="智能体不存在")
 
 # ==================== 运营平台 API ====================
@@ -257,7 +287,7 @@ def create_task(task_data: dict):
                 result=None,
                 logs=[]
             )
-            tasks_db.append(task)
+            tasks_db.insert(0, task)
             return task
     raise HTTPException(status_code=404, detail="智能体不存在")
 
@@ -301,19 +331,48 @@ def reject_task(task_id: str, approval_data: dict):
 def get_approvals():
     return approvals_db
 
-@app.get("/api/system-launch/status")
-def get_system_launch_status():
-    return {
-        "phase": "security_testing",
-        "phases": [
-            {"name": "需求分析", "status": "completed"},
-            {"name": "安全测评", "status": "in_progress"},
-            {"name": "定级备案", "status": "pending"},
-            {"name": "功能测试", "status": "pending"},
-            {"name": "合规检查", "status": "pending"},
-            {"name": "上线审批", "status": "pending"}
-        ]
-    }
+# ==================== 工作流 API ====================
+
+@app.get("/api/workflows")
+def get_workflows():
+    return workflows_db
+
+@app.get("/api/workflows/{workflow_id}")
+def get_workflow(workflow_id: str):
+    for wf in workflows_db:
+        if wf.id == workflow_id:
+            return wf
+    raise HTTPException(status_code=404, detail="工作流不存在")
+
+@app.post("/api/workflows/{workflow_id}/execute")
+def execute_workflow_step(workflow_id: str, step_data: dict):
+    for wf in workflows_db:
+        if wf.id == workflow_id:
+            step_order = step_data.get("step_order")
+            for step in wf.steps:
+                if step.order == step_order:
+                    step.status = "completed"
+                    task = Task(
+                        id=str(uuid.uuid4()),
+                        name=f"{step.agent_name} - {step.name}",
+                        agent_id=step.agent_id,
+                        agent_name=step.agent_name,
+                        status="completed",
+                        created_at=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        result=f"{step.name}完成",
+                        logs=[f"{step.name}任务执行完成"]
+                    )
+                    tasks_db.insert(0, task)
+                    
+                    next_step = next((s for s in wf.steps if s.order == step_order + 1), None)
+                    if next_step:
+                        next_step.status = "in_progress"
+                        wf.status = "running"
+                    else:
+                        wf.status = "completed"
+                    return {"message": f"{step.name}完成", "workflow": wf}
+            return {"message": "步骤不存在"}
+    raise HTTPException(status_code=404, detail="工作流不存在")
 
 if __name__ == "__main__":
     import uvicorn

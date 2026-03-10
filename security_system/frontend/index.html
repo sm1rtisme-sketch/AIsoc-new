@@ -26,20 +26,30 @@
                     <div class="nav-section-title">运营平台</div>
                     <a href="#" class="nav-item active" data-page="dashboard">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="7" height="7"/>
-                            <rect x="14" y="3" width="7" height="7"/>
-                            <rect x="14" y="14" width="7" height="7"/>
-                            <rect x="3" y="14" width="7" height="7"/>
+                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                            <path d="M22 4L12 14.01l-3-3"/>
                         </svg>
-                        <span>系统上线</span>
+                        <span>工作台</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="workflows">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="18" cy="5" r="3"/>
+                            <circle cx="6" cy="12" r="3"/>
+                            <circle cx="18" cy="19" r="3"/>
+                            <path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/>
+                        </svg>
+                        <span>运营场景</span>
                     </a>
                 </div>
                 <div class="nav-section">
                     <div class="nav-section-title">智能体平台</div>
                     <a href="#" class="nav-item" data-page="agents">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="3"/>
-                            <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+                            <rect x="3" y="11" width="18" height="10" rx="2"/>
+                            <circle cx="12" cy="5" r="2"/>
+                            <path d="M12 7v4"/>
+                            <line x1="8" y1="16" x2="8" y2="16"/>
+                            <line x1="16" y1="16" x2="16" y2="16"/>
                         </svg>
                         <span>智能体管理</span>
                     </a>
@@ -50,24 +60,11 @@
                         </svg>
                         <span>任务中心</span>
                     </a>
-                </div>
-                <div class="nav-section">
-                    <div class="nav-section-title">基础安全</div>
-                    <a href="#" class="nav-item" data-page="security">
+                    <a href="#" class="nav-item" data-page="skills">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                            <path d="M12 8v4M12 16h.01"/>
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                         </svg>
-                        <span>安全态势</span>
-                    </a>
-                    <a href="#" class="nav-item" data-page="assets">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="2" width="20" height="8" rx="2"/>
-                            <rect x="2" y="14" width="20" height="8" rx="2"/>
-                            <line x1="6" y1="6" x2="6.01" y2="6"/>
-                            <line x1="6" y1="18" x2="6.01" y2="18"/>
-                        </svg>
-                        <span>资产管理</span>
+                        <span>能力拓展</span>
                     </a>
                 </div>
             </nav>
@@ -84,11 +81,10 @@
 
         <!-- 主内容区 -->
         <main class="main-content">
-            <!-- 顶部栏 -->
             <header class="topbar">
                 <div class="page-title">
-                    <h1 id="pageTitle">系统上线场景</h1>
-                    <p class="page-subtitle">System Launch Scenario</p>
+                    <h1 id="pageTitle">工作台</h1>
+                    <p class="page-subtitle">智能体驱动的安全运营中心</p>
                 </div>
                 <div class="topbar-actions">
                     <button class="btn btn-icon">
@@ -107,159 +103,124 @@
                 </div>
             </header>
 
-            <!-- 内容页面 -->
             <div class="content">
-                <!-- 系统上线仪表盘 -->
+                <!-- 工作台 -->
                 <div id="page-dashboard" class="page active">
-                    <div class="launch-flow">
-                        <div class="flow-header">
-                            <h2>系统上线流程</h2>
-                            <span class="flow-status">当前阶段: 安全测评</span>
+                    <div class="stats-overview">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="10" rx="2"/>
+                                    <circle cx="12" cy="5" r="2"/>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="agentCount">0</span>
+                                <span class="stat-label">智能体</span>
+                            </div>
                         </div>
-                        <div class="flow-timeline">
-                            <div class="flow-step completed">
-                                <div class="step-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M9 11l3 3L22 4"/>
-                                    </svg>
-                                </div>
-                                <div class="step-content">
-                                    <h4>需求分析</h4>
-                                    <p>已完成</p>
-                                </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                                    <path d="M22 4L12 14.01l-3-3"/>
+                                </svg>
                             </div>
-                            <div class="flow-step active">
-                                <div class="step-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <path d="M12 6v6l4 2"/>
-                                    </svg>
-                                </div>
-                                <div class="step-content">
-                                    <h4>安全测评</h4>
-                                    <p>进行中</p>
-                                </div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="taskCount">0</span>
+                                <span class="stat-label">任务</span>
                             </div>
-                            <div class="flow-step">
-                                <div class="step-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-                                        <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
-                                    </svg>
-                                </div>
-                                <div class="step-content">
-                                    <h4>定级备案</h4>
-                                    <p>待开始</p>
-                                </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="18" cy="5" r="3"/>
+                                    <circle cx="6" cy="12" r="3"/>
+                                    <circle cx="18" cy="19" r="3"/>
+                                    <path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/>
+                                </svg>
                             </div>
-                            <div class="flow-step">
-                                <div class="step-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                                        <path d="M22 4L12 14.01l-3-3"/>
-                                    </svg>
-                                </div>
-                                <div class="step-content">
-                                    <h4>功能测试</h4>
-                                    <p>待开始</p>
-                                </div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="workflowCount">0</span>
+                                <span class="stat-label">工作流</span>
                             </div>
-                            <div class="flow-step">
-                                <div class="step-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                    </svg>
-                                </div>
-                                <div class="step-content">
-                                    <h4>合规检查</h4>
-                                    <p>待开始</p>
-                                </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
                             </div>
-                            <div class="flow-step">
-                                <div class="step-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                                        <path d="M22 4L12 14.01l-3-3"/>
-                                    </svg>
-                                </div>
-                                <div class="step-content">
-                                    <h4>上线审批</h4>
-                                    <p>待开始</p>
-                                </div>
+                            <div class="stat-info">
+                                <span class="stat-value">IPDRR</span>
+                                <span class="stat-label">底层能力</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="dashboard-grid">
-                        <div class="card agent-card">
+                        <div class="card workflow-card full-width">
                             <div class="card-header">
-                                <h3>可用智能体</h3>
-                                <span class="badge">5 个</span>
-                            </div>
-                            <div class="card-content" id="agentList">
-                                <!-- 智能体列表将通过JS加载 -->
-                            </div>
-                        </div>
-
-                        <div class="card task-card">
-                            <div class="card-header">
-                                <h3>待审批任务</h3>
-                                <span class="badge warning" id="pendingCount">0</span>
-                            </div>
-                            <div class="card-content" id="pendingTasks">
-                                <!-- 待审批任务将通过JS加载 -->
-                            </div>
-                        </div>
-
-                        <div class="card security-card">
-                            <div class="card-header">
-                                <h3>安全态势</h3>
+                                <h3>系统上线工作流</h3>
+                                <span class="badge success">进行中</span>
                             </div>
                             <div class="card-content">
-                                <div class="security-stats">
-                                    <div class="stat-item">
-                                        <span class="stat-value critical" id="criticalCount">1</span>
-                                        <span class="stat-label">严重漏洞</span>
-                                    </div>
-                                    <div class="stat-item">
-                                        <span class="stat-value high" id="highCount">1</span>
-                                        <span class="stat-label">高危漏洞</span>
-                                    </div>
-                                    <div class="stat-item">
-                                        <span class="stat-value medium" id="mediumCount">1</span>
-                                        <span class="stat-label">中危漏洞</span>
-                                    </div>
-                                    <div class="stat-item">
-                                        <span class="stat-value low" id="lowCount">0</span>
-                                        <span class="stat-label">低危漏洞</span>
-                                    </div>
+                                <div class="workflow-steps" id="workflowSteps">
+                                    <!-- 工作流步骤将通过JS加载 -->
                                 </div>
                             </div>
                         </div>
 
-                        <div class="card events-card">
+                        <div class="card">
                             <div class="card-header">
-                                <h3>最近安全事件</h3>
+                                <h3>智能体概览</h3>
+                                <a href="#" onclick="navigateTo('agents'); return false;" class="view-all">查看全部</a>
                             </div>
-                            <div class="card-content" id="securityEvents">
-                                <!-- 安全事件将通过JS加载 -->
+                            <div class="card-content" id="agentList">
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>最近任务</h3>
+                                <a href="#" onclick="navigateTo('tasks'); return false;" class="view-all">查看全部</a>
+                            </div>
+                            <div class="card-content" id="recentTasks">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 智能体管理页面 -->
-                <div id="page-agents" class="page">
+                <!-- 运营场景 -->
+                <div id="page-workflows" class="page">
                     <div class="page-header">
-                        <h2>智能体管理</h2>
-                        <p>管理和拓展智能体能力</p>
+                        <h2>运营场景</h2>
+                        <p>管理智能体工作流，实现场景闭环</p>
                     </div>
-                    <div class="agents-grid" id="agentsGrid">
-                        <!-- 智能体卡片将通过JS加载 -->
+                    <div class="workflows-grid" id="workflowsGrid">
                     </div>
                 </div>
 
-                <!-- 任务中心页面 -->
+                <!-- 智能体管理 -->
+                <div id="page-agents" class="page">
+                    <div class="page-header">
+                        <div>
+                            <h2>智能体管理</h2>
+                            <p>管理和拓展智能体能力，智能体调用底层IPDRR能力</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="showCreateAgentModal()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            新增智能体
+                        </button>
+                    </div>
+                    <div class="agents-grid" id="agentsGrid">
+                    </div>
+                </div>
+
+                <!-- 任务中心 -->
                 <div id="page-tasks" class="page">
                     <div class="page-header">
                         <h2>任务中心</h2>
@@ -277,70 +238,72 @@
                                 </tr>
                             </thead>
                             <tbody id="tasksTable">
-                                <!-- 任务列表将通过JS加载 -->
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- 安全态势页面 -->
-                <div id="page-security" class="page">
+                <!-- 能力拓展 -->
+                <div id="page-skills" class="page">
                     <div class="page-header">
-                        <h2>安全态势</h2>
-                        <p>基础安全IPDRR能力展示</p>
+                        <h2>能力拓展</h2>
+                        <p>智能体调用的底层安全能力 (IPDRR)</p>
                     </div>
-                    <div class="security-grid">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3>漏洞扫描</h3>
-                                <span class="status-badge active">在线</span>
+                    <div class="capability-grid">
+                        <div class="capability-card">
+                            <div class="capability-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
                             </div>
-                            <div class="card-content">
-                                <p>自动化漏洞扫描与风险评估工具</p>
-                                <button class="btn btn-primary" onclick="runScan('vuln')">启动扫描</button>
-                            </div>
+                            <h3>识别 (Identify)</h3>
+                            <p>资产发现、漏洞扫描、代码审计、安全评估</p>
+                            <span class="capability-tag">被动能力</span>
                         </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <h3>代码审计</h3>
-                                <span class="status-badge active">在线</span>
+                        <div class="capability-card">
+                            <div class="capability-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    <path d="M12 8v4M12 16h.01"/>
+                                </svg>
                             </div>
-                            <div class="card-content">
-                                <p>静态代码分析与安全审计工具</p>
-                                <button class="btn btn-primary" onclick="runScan('code')">启动审计</button>
-                            </div>
+                            <h3>保护 (Protect)</h3>
+                            <p>访问控制、数据加密、身份认证、安全策略</p>
+                            <span class="capability-tag">被动能力</span>
                         </div>
-                        <div class="card full-width">
-                            <div class="card-header">
-                                <h3>漏洞列表</h3>
+                        <div class="capability-card">
+                            <div class="capability-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 6v6l4 2"/>
+                                </svg>
                             </div>
-                            <div class="card-content">
-                                <table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>漏洞名称</th>
-                                            <th>严重程度</th>
-                                            <th>状态</th>
-                                            <th>发现时间</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="vulnTable">
-                                        <!-- 漏洞列表将通过JS加载 -->
-                                    </tbody>
-                                </table>
-                            </div>
+                            <h3>检测 (Detect)</h3>
+                            <p>入侵检测、异常行为分析、日志审计、威胁监测</p>
+                            <span class="capability-tag">被动能力</span>
                         </div>
-                    </div>
-                </div>
-
-                <!-- 资产管理页面 -->
-                <div id="page-assets" class="page">
-                    <div class="page-header">
-                        <h2>资产管理</h2>
-                        <p>管理和监控所有资产</p>
-                    </div>
-                    <div class="assets-grid" id="assetsGrid">
-                        <!-- 资产卡片将通过JS加载 -->
+                        <div class="capability-card">
+                            <div class="capability-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                                    <path d="M22 4L12 14.01l-3-3"/>
+                                </svg>
+                            </div>
+                            <h3>响应 (Respond)</h3>
+                            <p>事件响应、应急处置、威胁阻断、恢复还原</p>
+                            <span class="capability-tag">主动能力</span>
+                        </div>
+                        <div class="capability-card">
+                            <div class="capability-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    <path d="M9 12l2 2 4-4"/>
+                                </svg>
+                            </div>
+                            <h3>恢复 (Recover)</h3>
+                            <p>业务恢复、数据修复、容灾备份、持续运营</p>
+                            <span class="capability-tag">主动能力</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -363,13 +326,50 @@
                 <div class="form-group">
                     <label>选择智能体</label>
                     <select id="taskAgent">
-                        <!-- 智能体选项将通过JS加载 -->
                     </select>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn" onclick="closeModal()">取消</button>
                 <button class="btn btn-primary" onclick="createTask()">创建</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增智能体模态框 -->
+    <div class="modal" id="createAgentModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3>新增智能体</h3>
+                <button class="modal-close" onclick="closeAgentModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>智能体名称</label>
+                    <input type="text" id="agentName" placeholder="请输入智能体名称">
+                </div>
+                <div class="form-group">
+                    <label>类型</label>
+                    <select id="agentType">
+                        <option value="security">安全测试</option>
+                        <option value="compliance">合规审计</option>
+                        <option value="testing">功能测试</option>
+                        <option value="ops">运维自动化</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>描述</label>
+                    <input type="text" id="agentDesc" placeholder="请输入智能体描述">
+                </div>
+                <div class="form-group">
+                    <label>能力 (逗号分隔)</label>
+                    <input type="text" id="agentCaps" placeholder="如: 漏洞扫描, 风险评估">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeAgentModal()">取消</button>
+                <button class="btn btn-primary" onclick="createAgent()">创建</button>
             </div>
         </div>
     </div>
@@ -383,10 +383,23 @@
                 <button class="modal-close" onclick="closeTaskModal()">&times;</button>
             </div>
             <div class="modal-body" id="taskDetailContent">
-                <!-- 任务详情将通过JS加载 -->
             </div>
             <div class="modal-footer" id="taskDetailActions">
-                <!-- 操作按钮将通过JS加载 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 智能体详情模态框 -->
+    <div class="modal" id="agentDetailModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3>智能体详情</h3>
+                <button class="modal-close" onclick="closeAgentDetailModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="agentDetailContent">
+            </div>
+            <div class="modal-footer" id="agentDetailActions">
             </div>
         </div>
     </div>
