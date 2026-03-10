@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安全运营平台 | Security OPS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </div>
+                <span class="logo-text">安全运营平台</span>
+            </div>
+            <nav class="nav-menu">
+                <div class="nav-section">
+                    <div class="nav-section-title">运营平台</div>
+                    <a href="#" class="nav-item active" data-page="dashboard">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="14" y="3" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/>
+                            <rect x="3" y="14" width="7" height="7"/>
+                        </svg>
+                        <span>系统上线</span>
+                    </a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">智能体平台</div>
+                    <a href="#" class="nav-item" data-page="agents">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+                        </svg>
+                        <span>智能体管理</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="tasks">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4"/>
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                        </svg>
+                        <span>任务中心</span>
+                    </a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">基础安全</div>
+                    <a href="#" class="nav-item" data-page="security">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <path d="M12 8v4M12 16h.01"/>
+                        </svg>
+                        <span>安全态势</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="assets">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="8" rx="2"/>
+                            <rect x="2" y="14" width="20" height="8" rx="2"/>
+                            <line x1="6" y1="6" x2="6.01" y2="6"/>
+                            <line x1="6" y1="18" x2="6.01" y2="18"/>
+                        </svg>
+                        <span>资产管理</span>
+                    </a>
+                </div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">S</div>
+                    <div class="user-details">
+                        <span class="user-name">安全管理员</span>
+                        <span class="user-role">Admin</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 顶部栏 -->
+            <header class="topbar">
+                <div class="page-title">
+                    <h1 id="pageTitle">系统上线场景</h1>
+                    <p class="page-subtitle">System Launch Scenario</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="btn btn-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                            <path d="M13.73 21a2 2 0 01-3.46 0"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-primary" id="newTaskBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        新建任务
+                    </button>
+                </div>
+            </header>
+
+            <!-- 内容页面 -->
+            <div class="content">
+                <!-- 系统上线仪表盘 -->
+                <div id="page-dashboard" class="page active">
+                    <div class="launch-flow">
+                        <div class="flow-header">
+                            <h2>系统上线流程</h2>
+                            <span class="flow-status">当前阶段: 安全测评</span>
+                        </div>
+                        <div class="flow-timeline">
+                            <div class="flow-step completed">
+                                <div class="step-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 11l3 3L22 4"/>
+                                    </svg>
+                                </div>
+                                <div class="step-content">
+                                    <h4>需求分析</h4>
+                                    <p>已完成</p>
+                                </div>
+                            </div>
+                            <div class="flow-step active">
+                                <div class="step-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 6v6l4 2"/>
+                                    </svg>
+                                </div>
+                                <div class="step-content">
+                                    <h4>安全测评</h4>
+                                    <p>进行中</p>
+                                </div>
+                            </div>
+                            <div class="flow-step">
+                                <div class="step-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                                        <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                                    </svg>
+                                </div>
+                                <div class="step-content">
+                                    <h4>定级备案</h4>
+                                    <p>待开始</p>
+                                </div>
+                            </div>
+                            <div class="flow-step">
+                                <div class="step-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                                        <path d="M22 4L12 14.01l-3-3"/>
+                                    </svg>
+                                </div>
+                                <div class="step-content">
+                                    <h4>功能测试</h4>
+                                    <p>待开始</p>
+                                </div>
+                            </div>
+                            <div class="flow-step">
+                                <div class="step-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    </svg>
+                                </div>
+                                <div class="step-content">
+                                    <h4>合规检查</h4>
+                                    <p>待开始</p>
+                                </div>
+                            </div>
+                            <div class="flow-step">
+                                <div class="step-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                                        <path d="M22 4L12 14.01l-3-3"/>
+                                    </svg>
+                                </div>
+                                <div class="step-content">
+                                    <h4>上线审批</h4>
+                                    <p>待开始</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="card agent-card">
+                            <div class="card-header">
+                                <h3>可用智能体</h3>
+                                <span class="badge">5 个</span>
+                            </div>
+                            <div class="card-content" id="agentList">
+                                <!-- 智能体列表将通过JS加载 -->
+                            </div>
+                        </div>
+
+                        <div class="card task-card">
+                            <div class="card-header">
+                                <h3>待审批任务</h3>
+                                <span class="badge warning" id="pendingCount">0</span>
+                            </div>
+                            <div class="card-content" id="pendingTasks">
+                                <!-- 待审批任务将通过JS加载 -->
+                            </div>
+                        </div>
+
+                        <div class="card security-card">
+                            <div class="card-header">
+                                <h3>安全态势</h3>
+                            </div>
+                            <div class="card-content">
+                                <div class="security-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-value critical" id="criticalCount">1</span>
+                                        <span class="stat-label">严重漏洞</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value high" id="highCount">1</span>
+                                        <span class="stat-label">高危漏洞</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value medium" id="mediumCount">1</span>
+                                        <span class="stat-label">中危漏洞</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value low" id="lowCount">0</span>
+                                        <span class="stat-label">低危漏洞</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card events-card">
+                            <div class="card-header">
+                                <h3>最近安全事件</h3>
+                            </div>
+                            <div class="card-content" id="securityEvents">
+                                <!-- 安全事件将通过JS加载 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 智能体管理页面 -->
+                <div id="page-agents" class="page">
+                    <div class="page-header">
+                        <h2>智能体管理</h2>
+                        <p>管理和拓展智能体能力</p>
+                    </div>
+                    <div class="agents-grid" id="agentsGrid">
+                        <!-- 智能体卡片将通过JS加载 -->
+                    </div>
+                </div>
+
+                <!-- 任务中心页面 -->
+                <div id="page-tasks" class="page">
+                    <div class="page-header">
+                        <h2>任务中心</h2>
+                        <p>查看和管理所有任务</p>
+                    </div>
+                    <div class="tasks-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>任务名称</th>
+                                    <th>执行智能体</th>
+                                    <th>状态</th>
+                                    <th>创建时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tasksTable">
+                                <!-- 任务列表将通过JS加载 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 安全态势页面 -->
+                <div id="page-security" class="page">
+                    <div class="page-header">
+                        <h2>安全态势</h2>
+                        <p>基础安全IPDRR能力展示</p>
+                    </div>
+                    <div class="security-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>漏洞扫描</h3>
+                                <span class="status-badge active">在线</span>
+                            </div>
+                            <div class="card-content">
+                                <p>自动化漏洞扫描与风险评估工具</p>
+                                <button class="btn btn-primary" onclick="runScan('vuln')">启动扫描</button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>代码审计</h3>
+                                <span class="status-badge active">在线</span>
+                            </div>
+                            <div class="card-content">
+                                <p>静态代码分析与安全审计工具</p>
+                                <button class="btn btn-primary" onclick="runScan('code')">启动审计</button>
+                            </div>
+                        </div>
+                        <div class="card full-width">
+                            <div class="card-header">
+                                <h3>漏洞列表</h3>
+                            </div>
+                            <div class="card-content">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>漏洞名称</th>
+                                            <th>严重程度</th>
+                                            <th>状态</th>
+                                            <th>发现时间</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="vulnTable">
+                                        <!-- 漏洞列表将通过JS加载 -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 资产管理页面 -->
+                <div id="page-assets" class="page">
+                    <div class="page-header">
+                        <h2>资产管理</h2>
+                        <p>管理和监控所有资产</p>
+                    </div>
+                    <div class="assets-grid" id="assetsGrid">
+                        <!-- 资产卡片将通过JS加载 -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 新建任务模态框 -->
+    <div class="modal" id="newTaskModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>新建任务</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>任务名称</label>
+                    <input type="text" id="taskName" placeholder="请输入任务名称">
+                </div>
+                <div class="form-group">
+                    <label>选择智能体</label>
+                    <select id="taskAgent">
+                        <!-- 智能体选项将通过JS加载 -->
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal()">取消</button>
+                <button class="btn btn-primary" onclick="createTask()">创建</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 任务详情模态框 -->
+    <div class="modal" id="taskDetailModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3>任务详情</h3>
+                <button class="modal-close" onclick="closeTaskModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="taskDetailContent">
+                <!-- 任务详情将通过JS加载 -->
+            </div>
+            <div class="modal-footer" id="taskDetailActions">
+                <!-- 操作按钮将通过JS加载 -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
