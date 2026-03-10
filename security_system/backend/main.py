@@ -574,8 +574,30 @@ def execute_workflow_step(workflow_id: str, step_order: int):
 # ==================== 任务 API ====================
 
 @app.get("/api/tasks")
-def get_tasks():
-    return tasks_db
+def get_tasks(status: str = None, agent_id: str = None, workflow_id: str = None):
+    result = tasks_db
+    if status:
+        result = [t for t in result if t["status"] == status]
+    if agent_id:
+        result = [t for t in result if t.get("agent_id") == agent_id]
+    if workflow_id:
+        result = [t for t in result if t.get("workflow_id") == workflow_id]
+    return result
+
+@app.get("/api/tasks/stats")
+def get_task_stats():
+    total = len(tasks_db)
+    pending = len([t for t in tasks_db if t["status"] == "pending"])
+    running = len([t for t in tasks_db if t["status"] == "running"])
+    completed = len([t for t in tasks_db if t["status"] == "completed"])
+    failed = len([t for t in tasks_db if t["status"] in ["failed", "rejected"]])
+    return {
+        "total": total,
+        "pending": pending,
+        "running": running,
+        "completed": completed,
+        "failed": failed
+    }
 
 @app.get("/api/tasks/{task_id}")
 def get_task(task_id: str):

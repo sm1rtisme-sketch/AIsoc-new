@@ -252,9 +252,70 @@
                 <!-- 任务中心 -->
                 <div id="page-tasks" class="page">
                     <div class="page-header">
-                        <h2>任务中心</h2>
-                        <p>查看和管理所有任务，包含工作流任务和审批任务</p>
+                        <div>
+                            <h2>任务中心</h2>
+                            <p>查看和管理所有任务，包含工作流任务和审批任务</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="showCreateTaskModal()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            新建任务
+                        </button>
                     </div>
+                    
+                    <!-- 任务统计 -->
+                    <div class="task-stats" id="taskStats">
+                        <div class="task-stat-item" onclick="filterTasks('all')">
+                            <span class="task-stat-value" id="statTotal">0</span>
+                            <span class="task-stat-label">全部任务</span>
+                        </div>
+                        <div class="task-stat-item" onclick="filterTasks('pending')">
+                            <span class="task-stat-value warning" id="statPending">0</span>
+                            <span class="task-stat-label">待审批</span>
+                        </div>
+                        <div class="task-stat-item" onclick="filterTasks('running')">
+                            <span class="task-stat-value primary" id="statRunning">0</span>
+                            <span class="task-stat-label">执行中</span>
+                        </div>
+                        <div class="task-stat-item" onclick="filterTasks('completed')">
+                            <span class="task-stat-value success" id="statCompleted">0</span>
+                            <span class="task-stat-label">已完成</span>
+                        </div>
+                        <div class="task-stat-item" onclick="filterTasks('failed')">
+                            <span class="task-stat-value danger" id="statFailed">0</span>
+                            <span class="task-stat-label">失败/拒绝</span>
+                        </div>
+                    </div>
+
+                    <!-- 筛选栏 -->
+                    <div class="task-filters">
+                        <div class="filter-group">
+                            <label>状态筛选</label>
+                            <select id="taskStatusFilter" onchange="applyFilters()">
+                                <option value="">全部</option>
+                                <option value="pending">待审批</option>
+                                <option value="running">执行中</option>
+                                <option value="completed">已完成</option>
+                                <option value="failed">失败/拒绝</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>智能体筛选</label>
+                            <select id="taskAgentFilter" onchange="applyFilters()">
+                                <option value="">全部</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>工作流筛选</label>
+                            <select id="taskWorkflowFilter" onchange="applyFilters()">
+                                <option value="">全部</option>
+                            </select>
+                        </div>
+                        <button class="btn" onclick="clearFilters()">清除筛选</button>
+                    </div>
+
                     <div class="tasks-table-container">
                         <table class="data-table">
                             <thead>
@@ -385,6 +446,42 @@
             <div class="modal-body" id="workflowDetailContent">
             </div>
             <div class="modal-footer" id="workflowDetailActions">
+            </div>
+        </div>
+    </div>
+
+    <!-- 新建任务模态框 -->
+    <div class="modal" id="createTaskModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>新建任务</h3>
+                <button class="modal-close" onclick="closeCreateTaskModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>任务名称</label>
+                    <input type="text" id="taskName" placeholder="请输入任务名称">
+                </div>
+                <div class="form-group">
+                    <label>选择智能体</label>
+                    <select id="taskAgentSelect">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>关联工作流 (可选)</label>
+                    <select id="taskWorkflowSelect">
+                        <option value="">无</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>步骤名称 (可选)</label>
+                    <input type="text" id="taskStepName" placeholder="如: 漏洞扫描">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeCreateTaskModal()">取消</button>
+                <button class="btn btn-primary" onclick="createTask()">创建</button>
             </div>
         </div>
     </div>

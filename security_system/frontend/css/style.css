@@ -1625,3 +1625,118 @@ body {
     flex-wrap: wrap;
     gap: 8px;
 }
+
+.task-stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.task-stat-item {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.task-stat-item:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+}
+
+.task-stat-value {
+    display: block;
+    font-size: 32px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    margin-bottom: 4px;
+}
+
+.task-stat-value.warning {
+    color: var(--accent-warning);
+}
+
+.task-stat-value.primary {
+    color: var(--accent-primary);
+}
+
+.task-stat-value.success {
+    color: var(--accent-success);
+}
+
+.task-stat-value.danger {
+    color: var(--accent-danger);
+}
+
+.task-stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.task-filters {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+}
+
+.filter-group {
+    flex: 1;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.task-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+.task-empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.task-empty p {
+    font-size: 14px;
+}
+
+@media (max-width: 1200px) {
+    .task-stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .task-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .task-filters {
+        flex-direction: column;
+    }
+}

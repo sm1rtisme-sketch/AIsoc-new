@@ -111,13 +111,41 @@ function renderAll() {
     renderPendingTasks();
     renderTemplateList();
     updateStats();
+    updateTaskStats();
     initCreateWorkflowModal();
+    initTaskFilters();
 }
 
 function updateStats() {
     document.getElementById('workflowCount').textContent = workflows.filter(w => w.status === 'running').length;
     document.getElementById('taskCount').textContent = tasks.filter(t => t.status === 'pending').length;
     document.getElementById('agentCount').textContent = agents.length;
+}
+
+function updateTaskStats() {
+    const total = tasks.length;
+    const pending = tasks.filter(t => t.status === 'pending').length;
+    const running = tasks.filter(t => t.status === 'running').length;
+    const completed = tasks.filter(t => t.status === 'completed').length;
+    const failed = tasks.filter(t => ['failed', 'rejected'].includes(t.status)).length;
+    
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statPending').textContent = pending;
+    document.getElementById('statRunning').textContent = running;
+    document.getElementById('statCompleted').textContent = completed;
+    document.getElementById('statFailed').textContent = failed;
+}
+
+function initTaskFilters() {
+    // 填充智能体筛选
+    const agentSelect = document.getElementById('taskAgentFilter');
+    agentSelect.innerHTML = '<option value="">全部</option>' + 
+        agents.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+    
+    // 填充工作流筛选
+    const workflowSelect = document.getElementById('taskWorkflowFilter');
+    workflowSelect.innerHTML = '<option value="">全部</option>' + 
+        workflows.map(w => `<option value="${w.id}">${w.name}</option>`).join('');
 }
 
 function renderRunningWorkflows() {
@@ -270,12 +298,28 @@ function renderPendingTasks() {
 function renderTasksTable() {
     const container = document.getElementById('tasksTable');
     
-    if (tasks.length === 0) {
-        container.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">暂无任务</td></tr>';
+    // 应用筛选
+    let filteredTasks = [...tasks];
+    if (currentTaskFilter.status) {
+        if (currentTaskFilter.status === 'failed') {
+            filteredTasks = filteredTasks.filter(t => ['failed', 'rejected'].includes(t.status));
+        } else {
+            filteredTasks = filteredTasks.filter(t => t.status === currentTaskFilter.status);
+        }
+    }
+    if (currentTaskFilter.agent_id) {
+        filteredTasks = filteredTasks.filter(t => t.agent_id === currentTaskFilter.agent_id);
+    }
+    if (currentTaskFilter.workflow_id) {
+        filteredTasks = filteredTasks.filter(t => t.workflow_id === currentTaskFilter.workflow_id);
+    }
+    
+    if (filteredTasks.length === 0) {
+        container.innerHTML = '<tr><td colspan="6"><div class="task-empty"><div class="task-empty-icon">📋</div><p>暂无任务</p></div></td></tr>';
         return;
     }
 
-    container.innerHTML = tasks.map(task => {
+    container.innerHTML = filteredTasks.map(task => {
         const wf = workflows.find(w => w.id === task.workflow_id);
         return `
             <tr>
@@ -295,6 +339,37 @@ function renderTasksTable() {
             </tr>
         `;
     }).join('');
+}
+
+let currentTaskFilter = {
+    status: '',
+    agent_id: '',
+    workflow_id: ''
+};
+
+function filterTasks(status) {
+    if (status === 'all') {
+        currentTaskFilter.status = '';
+    } else {
+        currentTaskFilter.status = status;
+    }
+    document.getElementById('taskStatusFilter').value = currentTaskFilter.status;
+    applyFilters();
+}
+
+function applyFilters() {
+    currentTaskFilter.status = document.getElementById('taskStatusFilter').value;
+    currentTaskFilter.agent_id = document.getElementById('taskAgentFilter').value;
+    currentTaskFilter.workflow_id = document.getElementById('taskWorkflowFilter').value;
+    renderTasksTable();
+}
+
+function clearFilters() {
+    currentTaskFilter = { status: '', agent_id: '', workflow_id: '' };
+    document.getElementById('taskStatusFilter').value = '';
+    document.getElementById('taskAgentFilter').value = '';
+    document.getElementById('taskWorkflowFilter').value = '';
+    renderTasksTable();
 }
 
 function getWorkflowStatusClass(status) {
@@ -865,5 +940,62 @@ async function executeAgent(agentId) {
         loadData();
     } catch (error) {
         alert('执行失败: ' + error.message);
+    }
+}
+
+// ==================== 任务管理函数 ====================
+
+function showCreateTaskModal() {
+    // 填充智能体选择
+    const agentSelect = document.getElementById('taskAgentSelect');
+    agentSelect.innerHTML = agents.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+    
+    // 填充工作流选择
+    const workflowSelect = document.getElementById('taskWorkflowSelect');
+    workflowSelect.innerHTML = '<option value="">无</option>' + 
+        workflows.map(w => `<option value="${w.id}">${w.name}</option>`).join('');
+    
+    document.getElementById('taskName').value = '';
+    document.getElementById('taskStepName').value = '';
+    document.getElementById('createTaskModal').classList.add('active');
+}
+
+function closeCreateTaskModal() {
+    document.getElementById('createTaskModal').classList.remove('active');
+}
+
+async function createTask() {
+    const name = document.getElementById('taskName').value.trim();
+    const agentId = document.getElementById('taskAgentSelect').value;
+    const workflowId = document.getElementById('taskWorkflowSelect').value;
+    const stepName = document.getElementById('taskStepName').value.trim();
+
+    if (!name) {
+        alert('请输入任务名称');
+        return;
+    }
+
+    try {
+        const taskData = {
+            name,
+            agent_id: agentId,
+            step_name: stepName
+        };
+        
+        if (workflowId) {
+            taskData.workflow_id = workflowId;
+        }
+
+        await fetch(`${API_BASE}/tasks`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(taskData)
+        });
+        
+        alert('任务创建成功');
+        closeCreateTaskModal();
+        loadData();
+    } catch (error) {
+        alert('创建失败: ' + error.message);
     }
 }
